@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <table border="1">
+        <tr>
+            <td colspan="4">
+                <div style="text-align: right;">
+                    <div id="historyDisplay" style="font-size: 0.6em; color: #bbb;"></div>
+                    <input type="text" id="inputbox" value="0"/>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="digitButton" onclick="digitBtnPressed(7)">7</td>
+            <td class="digitButton" onclick="digitBtnPressed(8)">8</td>
+            <td class="digitButton" onclick="digitBtnPressed(9)">9</td>
+            <td class="operatorButton" onclick="operatorBtnPressed('x')">x</td>
+        </tr>
+        <tr>
+            <td class="digitButton" onclick="digitBtnPressed(4)">4</td>
+            <td class="digitButton" onclick="digitBtnPressed(5)">5</td>
+            <td class="digitButton" onclick="digitBtnPressed(6)">6</td>
+            <td class="operatorButton" onclick="operatorBtnPressed('-')">-</td>
+        </tr>
+        <tr>
+            <td class="digitButton" onclick="digitBtnPressed(1)">1</td>
+            <td class="digitButton" onclick="digitBtnPressed(2)">2</td>
+            <td class="digitButton" onclick="digitBtnPressed(3)">3</td>
+            <td class="operatorButton" onclick="operatorBtnPressed('+')">+</td>
+        </tr>
+        <tr>
+            <td class="digitButton" colspan="2" onclick="digitBtnPressed(0)">0</td>
+            <td class="acbutton" onclick="btnACPressed()">AC</td>
+            <td class="operatorButton" onclick="operatorBtnPressed('/')">/</td>
+        </tr>
+        <tr>
+            <td class="operatorButton" colspan="3" onclick="equalsBtnPressed()">=</td>
+            <td class="operatorButton" onclick="showCurrentAnswer()">Ans</td>
+        </tr>
+    </table>
+
+    <script>
+        var newLine = true;
+        var value1 = null;
+        var currentOperator = null;
+
+        function digitBtnPressed(button) {
+            if (newLine) {
+                document.getElementById("inputbox").value = button;
+                newLine = false;
+            } else {
+                var currentValue = document.getElementById("inputbox").value;
+                document.getElementById("inputbox").value = currentValue + button;
+            }
+        }
+
+        function btnACPressed() {
+            document.getElementById("inputbox").value = 0;
+            document.getElementById("historyDisplay").textContent = "";
+            value1 = null;
+            currentOperator = null;
+            newLine = true;
+        }
+
+        function operatorBtnPressed(operator) {
+            currentOperator = operator;
+            value1 = parseInt(document.getElementById("inputbox").value);
+            document.getElementById("historyDisplay").textContent = value1 + " " + operator;
+            newLine = true;
+        }
+
+        function equalsBtnPressed() {
+            var value2 = parseInt(document.getElementById("inputbox").value);
+            var finalTotal;
+
+            switch (currentOperator) {
+                case "+":
+                    finalTotal = value1 + value2;
+                    break;
+                case "-":
+                    finalTotal = value1 - value2;
+                    break;
+                case "/":
+                    finalTotal = value1 / value2;
+                    break;
+                case "x":
+                    finalTotal = value1 * value2;
+                    break;
+            }
+
+            document.getElementById("inputbox").value = finalTotal;
+            document.getElementById("historyDisplay").textContent = "";
+            value1 = finalTotal;
+            currentOperator = null;
+            newLine = true;
+        }
+
+        function showCurrentAnswer() {
+            if (value1 !== null && currentOperator !== null) {
+                alert("Current: " + value1 + " " + currentOperator);
+            } else if (value1 !== null) {
+                alert("Current Answer: " + value1);
+            } else {
+                alert("No current operation.");
+            }
+        }
+    </script>
+</body>
+</html>
